@@ -27,3 +27,33 @@ export const archiveEvent = (req: Request, res: Response) => {
   if (!success) return res.status(404).json({ message: "Event not found." });
   res.json({ message: "Event archived." });
 };
+
+export const unarchiveEvent = (req: Request, res: Response) => {
+  const id = req.params.id;
+  const success = eventService.unarchiveEvent(id);
+  if (!success) return res.status(404).json({ message: "Event not found." });
+  res.json({ message: "Event unarchived." });
+};
+
+export const getEventsByCategory = (req: Request, res: Response) => {
+  const category = req.params.category;
+  res.json(eventService.getEventsByCategory(category));
+};
+
+export const getEventById = (req: Request, res: Response) => {
+  const id = req.params.id;
+  const event = eventService.getEventById(id);
+  if (!event) return res.status(404).json({ message: "Event not found." });
+  res.json(event);
+};
+
+export const updateEvent = (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { title, date, time, notes } = req.body;
+  if (!title || !date || !time) {
+    return res.status(400).json({ message: "Missing required fields." });
+  }
+  const event = eventService.updateEvent(id, { title, date, time, notes });
+  if (!event) return res.status(404).json({ message: "Event not found." });
+  res.json(event);
+};
