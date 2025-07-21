@@ -1,8 +1,10 @@
 import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
+import { EventServices } from "./event.service";
+import { TEvent } from "./events.interface";
 
-const createEvent = catchAsync(async (req, res) => {
+const createEvent = catchAsync(async (req: { body: TEvent }, res: any) => {
   const result = await EventServices.createEventIntoDB(req.body);
 
   sendResponse(res, {
