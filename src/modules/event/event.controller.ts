@@ -1,59 +1,87 @@
-import { Request, Response } from "express";
-import * as eventService from "../event/event.service";
+import httpStatus from "http-status";
+import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
 
-export const getEvents = (_req: Request, res: Response) => {
-  res.json(eventService.getAllEvents());
-};
+const createEvent = catchAsync(async (req, res) => {
+  const result = await EventServices.createEventIntoDB(req.body);
 
-export const createEvent = (req: Request, res: Response) => {
-  const { title, date, time, notes } = req.body;
-  if (!title || !date || !time) {
-    return res.status(400).json({ message: "Missing required fields." });
-  }
-  const event = eventService.addEvent({ title, date, time, notes });
-  res.status(201).json(event);
-};
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: "Event is created successfully",
+    data: result,
+  });
+});
 
-export const deleteEvent = (req: Request, res: Response) => {
-  const id = req.params.id;
-  const success = eventService.deleteEvent(id);
-  if (!success) return res.status(404).json({ message: "Event not found." });
-  res.json({ message: "Event deleted." });
-};
+const getAllEvents = catchAsync(async (req, res) => {
+  const result = await EventServices.getAllEventsFromDB(req.query);
 
-export const archiveEvent = (req: Request, res: Response) => {
-  const id = req.params.id;
-  const success = eventService.archiveEvent(id);
-  if (!success) return res.status(404).json({ message: "Event not found." });
-  res.json({ message: "Event archived." });
-};
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Events are retrieved successfully",
+    meta: result.meta,
+    data: result.result,
+  });
+});
 
-export const unarchiveEvent = (req: Request, res: Response) => {
-  const id = req.params.id;
-  const success = eventService.unarchiveEvent(id);
-  if (!success) return res.status(404).json({ message: "Event not found." });
-  res.json({ message: "Event unarchived." });
-};
+const getSingleEvent = catchAsync(async (req, res) => {
+  const { id } = req.params;
 
-export const getEventsByCategory = (req: Request, res: Response) => {
-  const category = req.params.category;
-  res.json(eventService.getEventsByCategory(category));
-};
+  const result = await EventServices.getSingleEventFromDB(id);
 
-export const getEventById = (req: Request, res: Response) => {
-  const id = req.params.id;
-  const event = eventService.getEventById(id);
-  if (!event) return res.status(404).json({ message: "Event not found." });
-  res.json(event);
-};
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Event is retrieved successfully",
+    data: result,
+  });
+});
 
-export const updateEvent = (req: Request, res: Response) => {
-  const id = req.params.id;
-  const { title, date, time, notes } = req.body;
-  if (!title || !date || !time) {
-    return res.status(400).json({ message: "Missing required fields." });
-  }
-  const event = eventService.updateEvent(id, { title, date, time, notes });
-  if (!event) return res.status(404).json({ message: "Event not found." });
-  res.json(event);
+const updateEvent = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await EventServices.updateEventIntoDB(id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Event is updated successfully",
+    data: result,
+  });
+});
+
+const deleteEvent = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await EventServices.deleteEventFromDB(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Event is deleted successfully",
+    data: result,
+  });
+});
+
+const archiveEvent = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await EventServices.archiveEventFromDB(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Event is archived successfully",
+    data: result,
+  });
+});
+
+export const EventControllers = {
+  createEvent,
+  getAllEvents,
+  getSingleEvent,
+  updateEvent,
+  deleteEvent,
+  archiveEvent,
 };
