@@ -1,5 +1,5 @@
 import httpStatus from "http-status";
-import catchAsync from "../../utils/catchAsync";
+import catchAsync from "../../utils/CatchAsync.ts";
 import sendResponse from "../../utils/sendResponse";
 import { EventServices } from "./event.service";
 import { TEvent } from "./events.interface";
