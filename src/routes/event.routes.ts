@@ -1,17 +1,16 @@
-import express from "express";
-import * as eventController from "../controllers/event.controller";
+import { Router } from "express";
 
-const router = express.Router();
+import { EventRoutes } from "../modules/Events/events.route";
 
-// Important: Place this before /:id
-router.get("/category/:category", eventController.getEventsByCategory);
+const router = Router();
 
-router.get("/", eventController.getEvents);
-router.post("/", eventController.createEvent);
-router.get("/:id", eventController.getEventById);
-router.put("/:id", eventController.updateEvent);
-router.delete("/:id", eventController.deleteEvent);
-router.patch("/:id/archive", eventController.archiveEvent);
-router.patch("/:id/unarchive", eventController.unarchiveEvent);
+const moduleRoutes = [
+  {
+    path: "/events",
+    route: EventRoutes,
+  },
+];
+
+moduleRoutes.forEach((route) => router.use(route.path, route.route));
 
 export default router;
