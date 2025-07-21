@@ -1,20 +1,20 @@
 [
   {
     "id": "ea7a0c27-0b1b-4d4b-acca-0a10fac6000d",
-    "title": "ss",
+    "title": "context",
     "date": "2025-07-14",
     "time": "17:00",
-    "notes": "ss",
+    "notes": "Important for the job.",
     "category": "Other",
     "status": "active"
   },
   {
     "id": "09a23aec-33d6-4828-975b-0bb783cb148e",
-    "title": "ss",
+    "title": "Normal discussion",
     "date": "2025-07-10",
     "time": "19:59",
-    "notes": "ss",
-    "category": "Other",
+    "notes": "Not important for everyone.",
+    "category": "Work",
     "status": "active"
   }
 ]
