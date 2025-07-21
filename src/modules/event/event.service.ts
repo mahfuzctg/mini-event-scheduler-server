@@ -1,8 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
-import { Event } from "../models/event.model";
-import { generateCategory } from "../utils/categorize";
+import { generateCategory } from "../../../utils/categorize";
 
 const dataPath = path.join(__dirname, "..", "data", "events.json");
 

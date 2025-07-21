@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as eventService from "../services/event.service";
+import * as eventService from "../event/event.service";
 
 export const getEvents = (_req: Request, res: Response) => {
   res.json(eventService.getAllEvents());
