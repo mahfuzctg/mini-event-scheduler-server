@@ -15,12 +15,14 @@ type TResponse<T> = {
   data: T;
 };
 
-const sendResponse = <T>(res: Response, data: TResponse<T>) => {
-  res.status(data?.statusCode).json({
-    success: data.success,
-    message: data.message,
-    meta: data.meta,
-    data: data.data,
+const sendResponse = <T>(res: Response, payload: TResponse<T>): void => {
+  const { statusCode, success, message, meta, data } = payload;
+
+  res.status(statusCode).json({
+    success,
+    message,
+    meta,
+    data,
   });
 };
 

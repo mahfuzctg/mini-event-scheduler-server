@@ -3,82 +3,55 @@ import { z } from "zod";
 const createEventValidationSchema = z.object({
   body: z.object({
     title: z
-      .string({
-        invalid_type_error: "Event title must be string",
-        required_error: "Event title is required",
-      })
-      .min(1, "Title cannot be empty")
-      .max(100, "Title cannot exceed 100 characters"),
-    date: z
-      .string({
-        invalid_type_error: "Event date must be string",
-        required_error: "Event date is required",
-      })
-      .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
-    time: z
-      .string({
-        invalid_type_error: "Event time must be string",
-        required_error: "Event time is required",
-      })
-      .regex(
-        /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/,
-        "Time must be in HH:MM format (24-hour)"
-      ),
+      .string()
+      .min(1, { message: "Event title is required" })
+      .max(100, { message: "Title cannot exceed 100 characters" }),
+
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
+      message: "Date must be in YYYY-MM-DD format",
+    }),
+
+    time: z.string().regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
+      message: "Time must be in HH:MM format (24-hour)",
+    }),
+
     notes: z
-      .string({
-        invalid_type_error: "Event notes must be string",
-      })
-      .optional()
-      .refine(
-        (val) => !val || val.length <= 500,
-        "Notes cannot exceed 500 characters"
-      ),
+      .string()
+      .max(500, { message: "Notes cannot exceed 500 characters" })
+      .optional(),
   }),
 });
 
 const updateEventValidationSchema = z.object({
   body: z.object({
     title: z
-      .string({
-        invalid_type_error: "Event title must be string",
-      })
-      .min(1, "Title cannot be empty")
-      .max(100, "Title cannot exceed 100 characters")
+      .string()
+      .min(1, { message: "Title cannot be empty" })
+      .max(100, { message: "Title cannot exceed 100 characters" })
       .optional(),
+
     date: z
-      .string({
-        invalid_type_error: "Event date must be string",
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, {
+        message: "Date must be in YYYY-MM-DD format",
       })
-      .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format")
       .optional(),
+
     time: z
-      .string({
-        invalid_type_error: "Event time must be string",
+      .string()
+      .regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
+        message: "Time must be in HH:MM format (24-hour)",
       })
-      .regex(
-        /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/,
-        "Time must be in HH:MM format (24-hour)"
-      )
       .optional(),
+
     notes: z
-      .string({
-        invalid_type_error: "Event notes must be string",
-      })
-      .optional()
-      .refine(
-        (val) => !val || val.length <= 500,
-        "Notes cannot exceed 500 characters"
-      ),
-    archived: z
-      .boolean({
-        invalid_type_error: "Archived status must be boolean",
-      })
+      .string()
+      .max(500, { message: "Notes cannot exceed 500 characters" })
       .optional(),
-    category: z
-      .string({
-        invalid_type_error: "Event category must be string",
-      })
-      .optional(),
+
+    archived: z.boolean().optional(),
+
+    category: z.string().optional(),
   }),
 });
 

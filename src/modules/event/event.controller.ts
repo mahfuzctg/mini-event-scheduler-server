@@ -1,13 +1,14 @@
 import httpStatus from "http-status";
-import catchAsync from "../../utils/CatchAsync.ts";
-import sendResponse from "../../utils/sendResponse";
+
+import CatchAsync from "../../utils/CatchAsync";
+import SendResponse from "../../utils/SendResponse";
 import { EventServices } from "./event.service";
 import { TEvent } from "./events.interface";
 
-const createEvent = catchAsync(async (req: { body: TEvent }, res: any) => {
+const createEvent = CatchAsync(async (req: { body: TEvent }, res: any) => {
   const result = await EventServices.createEventIntoDB(req.body);
 
-  sendResponse(res, {
+  SendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
     message: "Event is created successfully",
@@ -15,10 +16,10 @@ const createEvent = catchAsync(async (req: { body: TEvent }, res: any) => {
   });
 });
 
-const getAllEvents = catchAsync(async (req, res) => {
+const getAllEvents = CatchAsync(async (req, res) => {
   const result = await EventServices.getAllEventsFromDB(req.query);
 
-  sendResponse(res, {
+  SendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Events are retrieved successfully",
@@ -27,12 +28,12 @@ const getAllEvents = catchAsync(async (req, res) => {
   });
 });
 
-const getSingleEvent = catchAsync(async (req, res) => {
+const getSingleEvent = CatchAsync(async (req, res) => {
   const { id } = req.params;
 
   const result = await EventServices.getSingleEventFromDB(id);
 
-  sendResponse(res, {
+  SendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Event is retrieved successfully",
@@ -40,12 +41,12 @@ const getSingleEvent = catchAsync(async (req, res) => {
   });
 });
 
-const updateEvent = catchAsync(async (req, res) => {
+const updateEvent = CatchAsync(async (req, res) => {
   const { id } = req.params;
 
   const result = await EventServices.updateEventIntoDB(id, req.body);
 
-  sendResponse(res, {
+  SendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Event is updated successfully",
@@ -53,12 +54,12 @@ const updateEvent = catchAsync(async (req, res) => {
   });
 });
 
-const deleteEvent = catchAsync(async (req, res) => {
+const deleteEvent = CatchAsync(async (req, res) => {
   const { id } = req.params;
 
   const result = await EventServices.deleteEventFromDB(id);
 
-  sendResponse(res, {
+  SendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Event is deleted successfully",
@@ -66,12 +67,12 @@ const deleteEvent = catchAsync(async (req, res) => {
   });
 });
 
-const archiveEvent = catchAsync(async (req, res) => {
+const archiveEvent = CatchAsync(async (req, res) => {
   const { id } = req.params;
 
   const result = await EventServices.archiveEventFromDB(id);
 
-  sendResponse(res, {
+  SendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Event is archived successfully",
